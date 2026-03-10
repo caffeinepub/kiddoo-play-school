@@ -865,7 +865,7 @@ function ContactSection() {
                 icon: MapPin,
                 label: "Address",
                 value:
-                  "Rampur Road, Todapur, Hailley Mandi, Near Panchayati Dharamshala",
+                  "Rampur Road, Todapur, Haily Mandi, Near Panchayati Dharamshala, Tehsil- Pataudi, District Gurugram, Haryana - 122504",
                 color: "bg-kiddoo-pink/20 text-kiddoo-pink",
               },
               {
@@ -1124,7 +1124,8 @@ function Footer() {
             <ul className="space-y-3 text-white/60 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-kiddoo-pink" />
-                Rampur Road, Todapur, Hailley Mandi
+                Rampur Road, Todapur, Haily Mandi, Near Panchayati Dharamshala,
+                Tehsil- Pataudi, District Gurugram, Haryana - 122504
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 flex-shrink-0 text-kiddoo-green" />

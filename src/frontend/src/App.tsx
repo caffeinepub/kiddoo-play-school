@@ -1,11 +1,14 @@
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { useActor } from "@/hooks/useActor";
 import {
   Baby,
+  Bot,
   ChevronRight,
   Clock,
   GraduationCap,
@@ -14,8 +17,10 @@ import {
   Mail,
   MapPin,
   Menu,
+  MessageCircle,
   Palette,
   Phone,
+  Send,
   Shield,
   Sparkles,
   Star,
@@ -23,7 +28,7 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 const NAV_LINKS = [
@@ -31,54 +36,7 @@ const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Programs", href: "#programs" },
   { label: "Gallery", href: "#gallery" },
-  { label: "Announcements", href: "#announcements" },
   { label: "Contact", href: "#contact" },
-];
-
-const TEACHER_ANNOUNCEMENTS = [
-  {
-    date: "Mar 10, 2026",
-    title: "Staff Meeting",
-    desc: "Monthly staff meeting on March 15 at 8:30 AM. Attendance is mandatory.",
-  },
-  {
-    date: "Mar 8, 2026",
-    title: "New Teaching Materials",
-    desc: "New art and craft supplies have arrived. Please collect from the store room.",
-  },
-  {
-    date: "Mar 5, 2026",
-    title: "Training Workshop",
-    desc: "Child development workshop on March 20. Registration link shared via WhatsApp.",
-  },
-  {
-    date: "Mar 1, 2026",
-    title: "Holiday Schedule",
-    desc: "Please review the updated holiday calendar for the upcoming quarter.",
-  },
-];
-
-const PARENT_ANNOUNCEMENTS = [
-  {
-    date: "Mar 10, 2026",
-    title: "Annual Day Celebration",
-    desc: "Annual Day on April 5, 2026. Children should arrive by 9:00 AM in costume.",
-  },
-  {
-    date: "Mar 7, 2026",
-    title: "Fee Reminder",
-    desc: "March fees due by March 15. Please pay at the school office or via UPI.",
-  },
-  {
-    date: "Mar 4, 2026",
-    title: "Parent-Teacher Meeting",
-    desc: "PTM scheduled for March 22. Slot booking starts March 16.",
-  },
-  {
-    date: "Feb 28, 2026",
-    title: "Summer Vacation Notice",
-    desc: "School will remain closed May 1–June 15 for summer break.",
-  },
 ];
 
 const STATS = [
@@ -218,6 +176,316 @@ const TESTIMONIALS = [
     color: "bg-kiddoo-purple/20",
   },
 ];
+
+// ---------- FAQ Chatbot ----------
+
+const FAQ_RULES: { keywords: string[]; answer: string }[] = [
+  {
+    keywords: ["timing", "hour", "schedule", "time", "open", "close"],
+    answer: "Our school hours are Monday to Saturday, 9:00 AM to 1:30 PM. 🕘",
+  },
+  {
+    keywords: ["address", "location", "where", "direction", "find"],
+    answer:
+      "We are located at: Rampur Road, Todapur, Haily Mandi, Near Panchayati Dharamshala, Tehsil- Pataudi, District Gurugram, Haryana - 122504 📍",
+  },
+  {
+    keywords: ["phone", "call", "contact", "number", "mobile"],
+    answer: "You can reach us at +91 93556 13388 📞",
+  },
+  {
+    keywords: ["email", "mail"],
+    answer: "Our email is yadavsaurabh3388@gmail.com 📧",
+  },
+  {
+    keywords: ["fee", "fees", "cost", "price", "charge", "pay"],
+    answer:
+      "Please contact us directly for fee details. Call +91 93556 13388 or email yadavsaurabh3388@gmail.com 💰",
+  },
+  {
+    keywords: ["enroll", "admission", "join", "register", "admit"],
+    answer:
+      "Admissions for 2026-27 are open! Limited seats available. First 5 admissions get an extra 10% discount! Fill the contact form on this page or call us at +91 93556 13388 to schedule a free school tour! 🎉",
+  },
+  {
+    keywords: [
+      "program",
+      "nursery",
+      "kindergarten",
+      "pre-primary",
+      "class",
+      "age",
+      "curriculum",
+    ],
+    answer:
+      "We offer 3 programs: Nursery (2-3 years), Kindergarten (3-5 years), and Pre-Primary (5-6 years). Each is designed for the child's age group with play-based learning. 🎒",
+  },
+  {
+    keywords: ["teacher", "staff", "educator", "faculty"],
+    answer:
+      "We have 5+ qualified, certified educators who are warm, patient, and deeply experienced in early childhood development. 👩‍🏫",
+  },
+  {
+    keywords: ["student", "kid", "children", "child", "how many"],
+    answer:
+      "We currently have 40+ happy children learning and growing at Kiddoo! 😊",
+  },
+  {
+    keywords: ["founded", "established", "since", "year", "start"],
+    answer:
+      "Kiddoo Play School was founded in 2022 with a vision to nurture young minds. 🎉",
+  },
+  {
+    keywords: ["safe", "safety", "security", "cctv", "secure"],
+    answer:
+      "Your child's safety is our top priority. We have CCTV-monitored premises, childproofed spaces, and trained first-aid staff. 🛡️",
+  },
+  {
+    keywords: [
+      "activit",
+      "play",
+      "sport",
+      "art",
+      "craft",
+      "music",
+      "dance",
+      "science",
+    ],
+    answer:
+      "We offer arts & crafts, outdoor play, music & movement, science exploration, puppet shows, and much more every day! 🎨",
+  },
+];
+
+const FALLBACK_ANSWER =
+  "I'm not sure about that! Please contact us directly at +91 93556 13388 or yadavsaurabh3388@gmail.com and we'll be happy to help! 😊";
+
+const QUICK_REPLIES = [
+  "School timings",
+  "How to enroll?",
+  "Programs offered",
+  "Contact info",
+];
+
+type ChatMessage = {
+  id: number;
+  role: "bot" | "user";
+  text: string;
+};
+
+function getBotAnswer(input: string): string {
+  const lower = input.toLowerCase();
+  for (const rule of FAQ_RULES) {
+    if (rule.keywords.some((kw) => lower.includes(kw))) {
+      return rule.answer;
+    }
+  }
+  return FALLBACK_ANSWER;
+}
+
+function ChatbotWidget() {
+  const [open, setOpen] = useState(false);
+  const msgIdRef = useRef(0);
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    {
+      id: 0,
+      role: "bot",
+      text: "Hi! I'm Kiddoo's smart assistant. Ask me anything about the school! 😊",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [quickRepliesVisible, setQuickRepliesVisible] = useState(true);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional scroll-to-bottom on messages change
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [messages]);
+
+  const sendMessage = (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    setQuickRepliesVisible(false);
+    const userMsg: ChatMessage = {
+      id: ++msgIdRef.current,
+      role: "user",
+      text: trimmed,
+    };
+    const botMsg: ChatMessage = {
+      id: ++msgIdRef.current,
+      role: "bot",
+      text: getBotAnswer(trimmed),
+    };
+    setMessages((prev) => [...prev, userMsg, botMsg]);
+    setInput("");
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") sendMessage(input);
+  };
+
+  return (
+    <>
+      {/* Floating trigger button */}
+      <motion.button
+        type="button"
+        data-ocid="chatbot.open_modal_button"
+        onClick={() => setOpen((v) => !v)}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-kiddoo-yellow shadow-warm flex items-center justify-center text-foreground hover:bg-kiddoo-orange transition-colors"
+        aria-label="Open Kiddoo chatbot"
+      >
+        <AnimatePresence mode="wait">
+          {open ? (
+            <motion.span
+              key="close"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <X className="w-6 h-6" />
+            </motion.span>
+          ) : (
+            <motion.span
+              key="chat"
+              initial={{ rotate: 90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <MessageCircle className="w-6 h-6" />
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.button>
+
+      {/* Chat panel */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            data-ocid="chatbot.panel"
+            initial={{ opacity: 0, scale: 0.85, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: 20 }}
+            transition={{ type: "spring", stiffness: 320, damping: 28 }}
+            className="fixed bottom-24 right-6 z-50 w-[350px] max-w-[calc(100vw-2rem)]"
+            style={{ transformOrigin: "bottom right" }}
+          >
+            <Card className="flex flex-col h-[450px] shadow-2xl rounded-3xl overflow-hidden border-2 border-kiddoo-yellow/40">
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-3 bg-kiddoo-yellow">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-white/30 flex items-center justify-center">
+                    <Bot className="w-5 h-5 text-foreground" />
+                  </div>
+                  <div>
+                    <p className="font-display font-extrabold text-sm text-foreground leading-none">
+                      Kiddoo Assistant 🤖
+                    </p>
+                    <p className="text-xs text-foreground/60 mt-0.5">
+                      Usually replies instantly
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  data-ocid="chatbot.close_button"
+                  onClick={() => setOpen(false)}
+                  className="w-7 h-7 rounded-full bg-white/30 hover:bg-white/50 flex items-center justify-center transition-colors"
+                  aria-label="Close chatbot"
+                >
+                  <X className="w-4 h-4 text-foreground" />
+                </button>
+              </div>
+
+              {/* Messages */}
+              <ScrollArea className="flex-1 px-4 py-3" ref={scrollRef as any}>
+                <div className="flex flex-col gap-3">
+                  {messages.map((msg) => (
+                    <motion.div
+                      key={msg.id}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className={`flex ${
+                        msg.role === "user" ? "justify-end" : "justify-start"
+                      }`}
+                    >
+                      {msg.role === "bot" && (
+                        <div className="w-6 h-6 rounded-full bg-kiddoo-yellow/50 flex items-center justify-center mr-2 mt-0.5 flex-shrink-0">
+                          <Bot className="w-3.5 h-3.5 text-foreground" />
+                        </div>
+                      )}
+                      <div
+                        className={`max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed ${
+                          msg.role === "user"
+                            ? "bg-kiddoo-green text-white rounded-br-sm"
+                            : "bg-muted text-foreground rounded-bl-sm"
+                        }`}
+                      >
+                        {msg.text}
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* Quick reply chips */}
+                  {quickRepliesVisible && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex flex-wrap gap-2 mt-1 ml-8"
+                    >
+                      {QUICK_REPLIES.map((qr) => (
+                        <button
+                          key={qr}
+                          type="button"
+                          onClick={() => sendMessage(qr)}
+                          className="text-xs px-3 py-1.5 rounded-full border-2 border-kiddoo-yellow bg-kiddoo-yellow/10 hover:bg-kiddoo-yellow/30 text-foreground font-semibold transition-colors"
+                        >
+                          {qr}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </div>
+              </ScrollArea>
+
+              {/* Input row */}
+              <div className="px-3 py-3 border-t border-border bg-background flex items-center gap-2">
+                <Input
+                  data-ocid="chatbot.input"
+                  placeholder="Type your question..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1 rounded-2xl border-2 border-kiddoo-yellow/40 focus:border-kiddoo-yellow text-sm h-9"
+                />
+                <Button
+                  type="button"
+                  data-ocid="chatbot.submit_button"
+                  onClick={() => sendMessage(input)}
+                  disabled={!input.trim()}
+                  className="h-9 w-9 p-0 rounded-2xl bg-kiddoo-yellow hover:bg-kiddoo-orange text-foreground flex-shrink-0 disabled:opacity-40"
+                  aria-label="Send message"
+                >
+                  <Send className="w-4 h-4" />
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+// ---------- Existing Sections ----------
 
 function Navbar() {
   const [open, setOpen] = useState(false);
@@ -431,7 +699,7 @@ function HeroSection() {
               className="absolute bottom-4 right-4 bg-kiddoo-green text-white rounded-2xl px-3 py-2 shadow-md text-sm font-bold animate-float"
               style={{ animationDelay: "1s" }}
             >
-              🎉 Admissions Open!
+              🎉 Admissions Open! | First 5 get 10% off!
             </div>
           </div>
         </motion.div>
@@ -708,119 +976,6 @@ function WhyUsSection() {
     </section>
   );
 }
-
-function AnnouncementsSection() {
-  return (
-    <section id="announcements" className="py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-kiddoo-purple/20 text-kiddoo-purple font-bold text-sm mb-4">
-            📢 Updates
-          </span>
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-foreground mb-4">
-            Announcements
-          </h2>
-          <p className="text-foreground/60 max-w-2xl mx-auto text-lg">
-            Stay updated with the latest news for our school community
-          </p>
-        </motion.div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* For Teachers */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            <div className="flex items-center gap-3 mb-5 px-5 py-3 rounded-2xl bg-kiddoo-purple/15">
-              <span className="text-2xl">👩‍🏫</span>
-              <h3 className="font-display font-extrabold text-xl text-kiddoo-purple">
-                For Teachers
-              </h3>
-            </div>
-            <div className="flex flex-col gap-4">
-              {TEACHER_ANNOUNCEMENTS.map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  data-ocid={`announcements.teacher.item.${i + 1}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
-                  whileHover={{
-                    y: -2,
-                    boxShadow: "0 8px 24px oklch(var(--kiddoo-purple) / 0.12)",
-                  }}
-                  className="bg-white border border-kiddoo-purple/20 rounded-2xl p-5 shadow-sm cursor-default"
-                >
-                  <p className="text-xs text-foreground/40 font-medium mb-1">
-                    {item.date}
-                  </p>
-                  <h4 className="font-display font-bold text-base text-foreground mb-1">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm text-foreground/60 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* For Parents */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="flex items-center gap-3 mb-5 px-5 py-3 rounded-2xl bg-kiddoo-blue/15">
-              <span className="text-2xl">👨‍👩‍👧</span>
-              <h3 className="font-display font-extrabold text-xl text-kiddoo-blue">
-                For Parents
-              </h3>
-            </div>
-            <div className="flex flex-col gap-4">
-              {PARENT_ANNOUNCEMENTS.map((item, i) => (
-                <motion.div
-                  key={item.title}
-                  data-ocid={`announcements.parent.item.${i + 1}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.25 + i * 0.08 }}
-                  whileHover={{
-                    y: -2,
-                    boxShadow: "0 8px 24px oklch(var(--kiddoo-blue) / 0.12)",
-                  }}
-                  className="bg-white border border-kiddoo-blue/20 rounded-2xl p-5 shadow-sm cursor-default"
-                >
-                  <p className="text-xs text-foreground/40 font-medium mb-1">
-                    {item.date}
-                  </p>
-                  <h4 className="font-display font-bold text-base text-foreground mb-1">
-                    {item.title}
-                  </h4>
-                  <p className="text-sm text-foreground/60 leading-relaxed">
-                    {item.desc}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function GallerySection() {
   return (
     <section id="gallery" className="py-24 bg-kiddoo-yellow/10">
@@ -1072,8 +1227,8 @@ function ContactSection() {
                 our wonderful teachers!
               </p>
               <div className="mt-4 flex items-center gap-2 text-kiddoo-green font-bold text-sm">
-                <Sparkles className="w-4 h-4" />
-                Early bird discount available!
+                <Sparkles className="w-4 h-4" />🎁 First 5 Admissions get an
+                extra 10% discount!
               </div>
             </div>
           </motion.div>
@@ -1333,12 +1488,12 @@ export default function App() {
         <AboutSection />
         <ProgramsSection />
         <WhyUsSection />
-        <AnnouncementsSection />
         <GallerySection />
         <TestimonialsSection />
         <ContactSection />
       </main>
       <Footer />
+      <ChatbotWidget />
     </div>
   );
 }

@@ -35,9 +35,9 @@ const NAV_LINKS = [
 ];
 
 const STATS = [
-  { value: "2010", label: "Est.", emoji: "🎉" },
-  { value: "500+", label: "Happy Kids", emoji: "😊" },
-  { value: "20+", label: "Qualified Teachers", emoji: "👩‍🏫" },
+  { value: "2023", label: "Est.", emoji: "🎉" },
+  { value: "40+", label: "Happy Kids", emoji: "😊" },
+  { value: "5+", label: "Qualified Teachers", emoji: "👩‍🏫" },
   { value: "4.9★", label: "Star Rating", emoji: "⭐" },
 ];
 
@@ -311,7 +311,7 @@ function HeroSection() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-kiddoo-yellow/30 text-foreground text-sm font-bold mb-6"
           >
-            <span>🌟</span> Nurturing Young Minds Since 2010
+            <span>🌟</span> Nurturing Young Minds Since 2023
           </motion.div>
 
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-foreground mb-6">
@@ -430,9 +430,9 @@ function AboutSection() {
             </h3>
             <div className="space-y-4 text-foreground/70 leading-relaxed">
               <p>
-                Founded in 2010, Kiddoo Play School was built on a simple
+                Founded in 2023, Kiddoo Play School was built on a simple
                 belief: the early years are the most magical and impactful time
-                in a child's life. We've spent over a decade perfecting an
+                in a child's life. We started with a vision to create an
                 environment where children feel safe enough to be bold, curious,
                 and wonderfully themselves.
               </p>
@@ -478,19 +478,19 @@ function AboutSection() {
             {[
               {
                 emoji: "🎉",
-                value: "Est. 2010",
-                label: "Building futures for over 14 years",
+                value: "Est. 2023",
+                label: "Building futures since 2023",
                 bg: "bg-kiddoo-yellow/25",
               },
               {
                 emoji: "😊",
-                value: "500+",
+                value: "40+",
                 label: "Happy kids who have grown with us",
                 bg: "bg-kiddoo-green/25",
               },
               {
                 emoji: "👩‍🏫",
-                value: "20+",
+                value: "5+",
                 label: "Qualified, certified educators on staff",
                 bg: "bg-kiddoo-purple/25",
               },
@@ -864,13 +864,14 @@ function ContactSection() {
               {
                 icon: MapPin,
                 label: "Address",
-                value: "12 Sunshine Lane, Green Valley, Mumbai - 400001",
+                value:
+                  "Rampur Road, Todapur, Hailley Mandi, Near Panchayati Dharamshala",
                 color: "bg-kiddoo-pink/20 text-kiddoo-pink",
               },
               {
                 icon: Phone,
                 label: "Phone",
-                value: "+91 98765 43210",
+                value: "+91 73038 63388",
                 color: "bg-kiddoo-green/20 text-kiddoo-green",
               },
               {
@@ -882,7 +883,7 @@ function ContactSection() {
               {
                 icon: Clock,
                 label: "School Hours",
-                value: "Mon–Sat: 8:00 AM – 1:00 PM",
+                value: "Mon–Sat: 9:00 AM – 1:30 PM",
                 color: "bg-kiddoo-yellow/30 text-kiddoo-orange",
               },
             ].map((item) => (
@@ -1005,7 +1006,7 @@ function ContactSection() {
                   id="phone"
                   type="tel"
                   data-ocid="contact.phone.input"
-                  placeholder="+91 98765 43210"
+                  placeholder="+91 73038 63388"
                   value={form.phone}
                   onChange={(e) =>
                     setForm((p) => ({ ...p, phone: e.target.value }))
@@ -1086,7 +1087,7 @@ function Footer() {
             </div>
             <p className="text-white/60 text-sm leading-relaxed max-w-xs">
               Where little stars shine bright. Nurturing curious, confident, and
-              compassionate children since 2010.
+              compassionate children since 2023.
             </p>
             <div className="flex gap-3 mt-6">
               {["🌟", "🎨", "📚", "🌱"].map((emoji) => (
@@ -1123,11 +1124,11 @@ function Footer() {
             <ul className="space-y-3 text-white/60 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0 text-kiddoo-pink" />
-                12 Sunshine Lane, Mumbai
+                Rampur Road, Todapur, Hailley Mandi
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 flex-shrink-0 text-kiddoo-green" />
-                +91 98765 43210
+                +91 73038 63388
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 flex-shrink-0 text-kiddoo-blue" />
@@ -1135,7 +1136,7 @@ function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Clock className="w-4 h-4 flex-shrink-0 text-kiddoo-yellow" />
-                Mon–Sat: 8 AM – 1 PM
+                Mon–Sat: 9 AM – 1:30 PM
               </li>
             </ul>
           </div>

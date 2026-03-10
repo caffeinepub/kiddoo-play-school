@@ -31,7 +31,54 @@ const NAV_LINKS = [
   { label: "About", href: "#about" },
   { label: "Programs", href: "#programs" },
   { label: "Gallery", href: "#gallery" },
+  { label: "Announcements", href: "#announcements" },
   { label: "Contact", href: "#contact" },
+];
+
+const TEACHER_ANNOUNCEMENTS = [
+  {
+    date: "Mar 10, 2026",
+    title: "Staff Meeting",
+    desc: "Monthly staff meeting on March 15 at 8:30 AM. Attendance is mandatory.",
+  },
+  {
+    date: "Mar 8, 2026",
+    title: "New Teaching Materials",
+    desc: "New art and craft supplies have arrived. Please collect from the store room.",
+  },
+  {
+    date: "Mar 5, 2026",
+    title: "Training Workshop",
+    desc: "Child development workshop on March 20. Registration link shared via WhatsApp.",
+  },
+  {
+    date: "Mar 1, 2026",
+    title: "Holiday Schedule",
+    desc: "Please review the updated holiday calendar for the upcoming quarter.",
+  },
+];
+
+const PARENT_ANNOUNCEMENTS = [
+  {
+    date: "Mar 10, 2026",
+    title: "Annual Day Celebration",
+    desc: "Annual Day on April 5, 2026. Children should arrive by 9:00 AM in costume.",
+  },
+  {
+    date: "Mar 7, 2026",
+    title: "Fee Reminder",
+    desc: "March fees due by March 15. Please pay at the school office or via UPI.",
+  },
+  {
+    date: "Mar 4, 2026",
+    title: "Parent-Teacher Meeting",
+    desc: "PTM scheduled for March 22. Slot booking starts March 16.",
+  },
+  {
+    date: "Feb 28, 2026",
+    title: "Summer Vacation Notice",
+    desc: "School will remain closed May 1–June 15 for summer break.",
+  },
 ];
 
 const STATS = [
@@ -662,6 +709,118 @@ function WhyUsSection() {
   );
 }
 
+function AnnouncementsSection() {
+  return (
+    <section id="announcements" className="py-24 bg-white">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="inline-block px-4 py-1.5 rounded-full bg-kiddoo-purple/20 text-kiddoo-purple font-bold text-sm mb-4">
+            📢 Updates
+          </span>
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-foreground mb-4">
+            Announcements
+          </h2>
+          <p className="text-foreground/60 max-w-2xl mx-auto text-lg">
+            Stay updated with the latest news for our school community
+          </p>
+        </motion.div>
+
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* For Teachers */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            <div className="flex items-center gap-3 mb-5 px-5 py-3 rounded-2xl bg-kiddoo-purple/15">
+              <span className="text-2xl">👩‍🏫</span>
+              <h3 className="font-display font-extrabold text-xl text-kiddoo-purple">
+                For Teachers
+              </h3>
+            </div>
+            <div className="flex flex-col gap-4">
+              {TEACHER_ANNOUNCEMENTS.map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  data-ocid={`announcements.teacher.item.${i + 1}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.15 + i * 0.08 }}
+                  whileHover={{
+                    y: -2,
+                    boxShadow: "0 8px 24px oklch(var(--kiddoo-purple) / 0.12)",
+                  }}
+                  className="bg-white border border-kiddoo-purple/20 rounded-2xl p-5 shadow-sm cursor-default"
+                >
+                  <p className="text-xs text-foreground/40 font-medium mb-1">
+                    {item.date}
+                  </p>
+                  <h4 className="font-display font-bold text-base text-foreground mb-1">
+                    {item.title}
+                  </h4>
+                  <p className="text-sm text-foreground/60 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* For Parents */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="flex items-center gap-3 mb-5 px-5 py-3 rounded-2xl bg-kiddoo-blue/15">
+              <span className="text-2xl">👨‍👩‍👧</span>
+              <h3 className="font-display font-extrabold text-xl text-kiddoo-blue">
+                For Parents
+              </h3>
+            </div>
+            <div className="flex flex-col gap-4">
+              {PARENT_ANNOUNCEMENTS.map((item, i) => (
+                <motion.div
+                  key={item.title}
+                  data-ocid={`announcements.parent.item.${i + 1}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.25 + i * 0.08 }}
+                  whileHover={{
+                    y: -2,
+                    boxShadow: "0 8px 24px oklch(var(--kiddoo-blue) / 0.12)",
+                  }}
+                  className="bg-white border border-kiddoo-blue/20 rounded-2xl p-5 shadow-sm cursor-default"
+                >
+                  <p className="text-xs text-foreground/40 font-medium mb-1">
+                    {item.date}
+                  </p>
+                  <h4 className="font-display font-bold text-base text-foreground mb-1">
+                    {item.title}
+                  </h4>
+                  <p className="text-sm text-foreground/60 leading-relaxed">
+                    {item.desc}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function GallerySection() {
   return (
     <section id="gallery" className="py-24 bg-kiddoo-yellow/10">
@@ -1174,6 +1333,7 @@ export default function App() {
         <AboutSection />
         <ProgramsSection />
         <WhyUsSection />
+        <AnnouncementsSection />
         <GallerySection />
         <TestimonialsSection />
         <ContactSection />

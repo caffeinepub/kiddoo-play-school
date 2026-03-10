@@ -35,7 +35,7 @@ const NAV_LINKS = [
 ];
 
 const STATS = [
-  { value: "2023", label: "Est.", emoji: "🎉" },
+  { value: "2022", label: "Est.", emoji: "🎉" },
   { value: "40+", label: "Happy Kids", emoji: "😊" },
   { value: "5+", label: "Qualified Teachers", emoji: "👩‍🏫" },
   { value: "4.9★", label: "Star Rating", emoji: "⭐" },
@@ -311,7 +311,7 @@ function HeroSection() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-kiddoo-yellow/30 text-foreground text-sm font-bold mb-6"
           >
-            <span>🌟</span> Nurturing Young Minds Since 2023
+            <span>🌟</span> Nurturing Young Minds Since 2022
           </motion.div>
 
           <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-foreground mb-6">
@@ -430,7 +430,7 @@ function AboutSection() {
             </h3>
             <div className="space-y-4 text-foreground/70 leading-relaxed">
               <p>
-                Founded in 2023, Kiddoo Play School was built on a simple
+                Founded in 2022, Kiddoo Play School was built on a simple
                 belief: the early years are the most magical and impactful time
                 in a child's life. We started with a vision to create an
                 environment where children feel safe enough to be bold, curious,
@@ -478,8 +478,8 @@ function AboutSection() {
             {[
               {
                 emoji: "🎉",
-                value: "Est. 2023",
-                label: "Building futures since 2023",
+                value: "Est. 2022",
+                label: "Building futures since 2022",
                 bg: "bg-kiddoo-yellow/25",
               },
               {
@@ -871,7 +871,7 @@ function ContactSection() {
               {
                 icon: Phone,
                 label: "Phone",
-                value: "+91 73038 63388",
+                value: "+91 93556 13388",
                 color: "bg-kiddoo-green/20 text-kiddoo-green",
               },
               {
@@ -1006,7 +1006,7 @@ function ContactSection() {
                   id="phone"
                   type="tel"
                   data-ocid="contact.phone.input"
-                  placeholder="+91 73038 63388"
+                  placeholder="+91 93556 13388"
                   value={form.phone}
                   onChange={(e) =>
                     setForm((p) => ({ ...p, phone: e.target.value }))
@@ -1087,7 +1087,7 @@ function Footer() {
             </div>
             <p className="text-white/60 text-sm leading-relaxed max-w-xs">
               Where little stars shine bright. Nurturing curious, confident, and
-              compassionate children since 2023.
+              compassionate children since 2022.
             </p>
             <div className="flex gap-3 mt-6">
               {["🌟", "🎨", "📚", "🌱"].map((emoji) => (
@@ -1129,7 +1129,7 @@ function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 flex-shrink-0 text-kiddoo-green" />
-                +91 73038 63388
+                +91 93556 13388
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 flex-shrink-0 text-kiddoo-blue" />

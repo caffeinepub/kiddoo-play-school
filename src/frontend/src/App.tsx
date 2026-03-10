@@ -877,7 +877,7 @@ function ContactSection() {
               {
                 icon: Mail,
                 label: "Email",
-                value: "hello@kiddooschool.com",
+                value: "yadavsaurabh3388@gmail.com",
                 color: "bg-kiddoo-blue/20 text-kiddoo-blue",
               },
               {
@@ -1133,7 +1133,7 @@ function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 flex-shrink-0 text-kiddoo-blue" />
-                hello@kiddooschool.com
+                yadavsaurabh3388@gmail.com
               </li>
               <li className="flex items-center gap-2">
                 <Clock className="w-4 h-4 flex-shrink-0 text-kiddoo-yellow" />
